@@ -16,6 +16,8 @@ public class Book {
     private String bookName;
     private double price;
 
+    private String description;
+
 
     public Book() {
 
@@ -38,5 +40,13 @@ public class Book {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

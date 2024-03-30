@@ -2,6 +2,8 @@ package com.demorsy.bookstore.Entity;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Table
 @Entity
 public class Publisher {
@@ -14,6 +16,9 @@ public class Publisher {
     private Long id;
     private String name;
     private String description;
+
+    @OneToMany(mappedBy = "publisher")
+    private List<Book> books;
 
     public void setId(Long id) {
         this.id = id;

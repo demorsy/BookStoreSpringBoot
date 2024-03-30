@@ -13,9 +13,16 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
             generator = "book_sequence")
     private Long id;
+    @Column(unique = true)
     private String bookName;
     private double price;
+    @ManyToOne()
+    @JoinColumn(name = "author_id")
+    private Author author;
 
+    @ManyToOne()
+    @JoinColumn(name = "publisher_id")
+    private Publisher publisher;
     private String description;
 
 

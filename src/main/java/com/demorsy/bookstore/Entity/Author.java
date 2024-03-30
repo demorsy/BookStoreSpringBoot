@@ -2,6 +2,8 @@ package com.demorsy.bookstore.Entity;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table
 public class Author {
@@ -16,6 +18,9 @@ public class Author {
 
     private String firstName;
     private String secondName;
+
+    @OneToMany(mappedBy = "author")
+    private List<Book> books;
 
     public Author() {
     }

@@ -1,6 +1,9 @@
 package com.demorsy.bookstore.Service;
 
+import com.demorsy.bookstore.Dto.CreateBookDto;
+import com.demorsy.bookstore.Entity.Author;
 import com.demorsy.bookstore.Entity.Book;
+import com.demorsy.bookstore.Entity.Publisher;
 import com.demorsy.bookstore.Repository.BookRepository;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +22,21 @@ public class BookService {
         return bookRepository.findAll();
     }
 
-    public Book saveBook(Book newBook){
+    public Book saveBook(CreateBookDto bookDto){
+        Book newBook = new Book();
+        newBook.setBookName(bookDto.bookName());
+        newBook.setPrice(bookDto.price());
+
+        Author author = new Author();
+        author.setId((long) bookDto.author_id());
+        newBook.setAuthor(author);
+
+        Publisher publisher = new Publisher();
+        publisher.setId((long) bookDto.publisher_id());
+        newBook.setPublisher(publisher);
+
+        newBook.setDescription(bookDto.description());
+
         return bookRepository.save(newBook);
     }
 

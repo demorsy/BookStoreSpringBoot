@@ -1,10 +1,16 @@
 package com.demorsy.bookstore.Controller;
 
+import com.demorsy.bookstore.Dto.CreateBookDto;
 import com.demorsy.bookstore.Entity.Book;
 import com.demorsy.bookstore.Service.BookService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,7 +34,7 @@ public class BookController {
     }
 
     @PostMapping
-    public Book createBook(@RequestBody Book newBook){
+    public Book createBook(@Valid @RequestBody CreateBookDto newBook){
         return bookService.saveBook(newBook);
     }
 
@@ -41,5 +47,19 @@ public class BookController {
     @ResponseStatus(HttpStatus.OK)
     public void deleteBook(@PathVariable Long bookId){
         bookService.deleteBook(bookId);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<?> handleMethodArgumantNotValidException(
+            MethodArgumentNotValidException exp
+    ){
+        var errors = new HashMap<String, String>();
+        exp.getBindingResult().getAllErrors()
+        .forEach(error -> {
+            var fieldName = ((FieldError) error).getField();
+            var errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 }

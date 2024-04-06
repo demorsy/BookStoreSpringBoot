@@ -1,6 +1,8 @@
 package com.demorsy.bookstore.Entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 
 @Entity
 @Table()
@@ -13,11 +15,13 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
             generator = "book_sequence")
     private Long id;
+
     @Column(unique = true)
     private String bookName;
     private double price;
     @ManyToOne()
     @JoinColumn(name = "author_id")
+    @JsonBackReference
     private Author author;
 
     @ManyToOne()
@@ -37,7 +41,7 @@ public class Book {
         return bookName;
     }
 
-    public void setBookname(String bookname) {
+    public void setBookName(String bookName) {
         this.bookName = bookName;
     }
 
@@ -55,5 +59,21 @@ public class Book {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Author getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(Author author) {
+        this.author = author;
+    }
+
+    public Publisher getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(Publisher publisher) {
+        this.publisher = publisher;
     }
 }

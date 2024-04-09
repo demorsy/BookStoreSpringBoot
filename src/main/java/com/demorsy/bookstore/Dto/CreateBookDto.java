@@ -1,13 +1,12 @@
 package com.demorsy.bookstore.Dto;
 
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 
 public record CreateBookDto(
-         @NotEmpty
+        @NotEmpty
          String bookName,
 
-         @NotNull(message = "Price cannot be null.")
+        @DecimalMin(value = "0.10",message = "Price cannot be null or smaller than 0.10")
          double price,
          int author_id,
          int publisher_id,

@@ -20,7 +20,7 @@ public class Author {
     private String firstName;
     private String secondName;
 
-    @OneToMany(mappedBy = "author")
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL) // if author is deleted, all books must be deleted.
     private List<Book> books;
 
     public Author() {

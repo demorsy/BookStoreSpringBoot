@@ -1,6 +1,7 @@
 package com.demorsy.bookstore.Controller;
 
 import com.demorsy.bookstore.Dto.CreateBookDto;
+import com.demorsy.bookstore.Dto.ResponseBookDto;
 import com.demorsy.bookstore.Entity.Book;
 import com.demorsy.bookstore.Service.BookService;
 import jakarta.validation.Valid;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/books")
@@ -24,22 +24,22 @@ public class BookController {
     }
 
     @GetMapping
-    public List<Book> getAllBooks(){
+    public List<ResponseBookDto> getAllBooks(){
         return bookService.getAllBooks();
     }
 
     @GetMapping("/{bookId}")
-    public Book getOneBookById(@PathVariable Long bookId){
+    public ResponseBookDto getOneBookById(@PathVariable Long bookId){
         return bookService.getOneBook(bookId);
     }
 
     @PostMapping
-    public Book createBook(@Valid @RequestBody CreateBookDto newBook){
+    public ResponseBookDto createBook(@Valid @RequestBody CreateBookDto newBook){
         return bookService.saveBook(newBook);
     }
 
     @GetMapping("/search/{bookName}")
-    public List<Book> getBooksByContainingName(@PathVariable String bookName){
+    public List<ResponseBookDto> getBooksByContainingName(@PathVariable String bookName){
         return bookService.getBooksByContainingName(bookName);
     }
 

@@ -1,12 +1,13 @@
 package com.demorsy.bookstore.Dto;
 
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 public record CreateBookDto(
-        @NotEmpty
+         @NotEmpty
          String bookName,
 
-         @NotEmpty(message = "Price cannot be null.")
+         @NotNull(message = "Price cannot be null.")
          double price,
          int author_id,
          int publisher_id,

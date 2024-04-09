@@ -1,51 +1,54 @@
 package com.demorsy.bookstore.Service;
 
 import com.demorsy.bookstore.Dto.CreateBookDto;
-import com.demorsy.bookstore.Entity.Author;
+import com.demorsy.bookstore.Dto.ResponseBookDto;
 import com.demorsy.bookstore.Entity.Book;
-import com.demorsy.bookstore.Entity.Publisher;
+import com.demorsy.bookstore.Mapper.BookDtoMapper;
 import com.demorsy.bookstore.Repository.BookRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class BookService {
-    BookRepository bookRepository;
+    private final BookRepository bookRepository;
 
-    public BookService(BookRepository bookRepository){
+    private final BookDtoMapper bookDtoMapper;
+
+    public BookService(BookRepository bookRepository, BookDtoMapper bookDtoMapper){
         this.bookRepository = bookRepository;
+        this.bookDtoMapper = bookDtoMapper;
     }
 
-    public List<Book> getAllBooks(){
-        return bookRepository.findAll();
+    public List<ResponseBookDto> getAllBooks(){
+        return bookRepository.findAll()
+                .stream()
+                .map(bookDtoMapper::convertBookToDto)
+                .collect(Collectors.toList());
     }
 
-    public Book saveBook(CreateBookDto bookDto){
-        Book newBook = new Book();
-        newBook.setBookName(bookDto.bookName());
-        newBook.setPrice(bookDto.price());
+    public ResponseBookDto saveBook(CreateBookDto bookDto){
+        Book newBook = bookDtoMapper.convertDtoToBook(bookDto); // Mapper
+        Book savedBook = bookRepository.save(newBook);
+        return bookDtoMapper.convertBookToDto(savedBook);
 
-        Author author = new Author();
-        author.setId((long) bookDto.author_id());
-        newBook.setAuthor(author);
-
-        Publisher publisher = new Publisher();
-        publisher.setId((long) bookDto.publisher_id());
-        newBook.setPublisher(publisher);
-
-        newBook.setDescription(bookDto.description());
-
-        return bookRepository.save(newBook);
     }
 
-    public Book getOneBook(Long bookId){
-        return bookRepository.findById(bookId).orElse(null);
+    public ResponseBookDto getOneBook(Long bookId){
+        Book foundbook =  bookRepository.findById(bookId).orElse(null);
+        if(foundbook != null){
+            return bookDtoMapper.convertBookToDto(foundbook);
+        }else{
+            return null;
+        }
     }
 
-    public List<Book> getBooksByContainingName(String bookName){
-        return bookRepository.findBooksByBookNameContaining(bookName);
+    public List<ResponseBookDto> getBooksByContainingName(String bookName){
+        return bookRepository.findBooksByBookNameContaining(bookName)
+                .stream()
+                .map(bookDtoMapper::convertBookToDto)
+                .collect(Collectors.toList());
     }
 
     public void deleteBook(Long bookId){

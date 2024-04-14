@@ -14,6 +14,10 @@ public class BookDtoMapper {
     }
 
     public Book convertDtoToBook(CreateBookDto bookDto){
+        if(bookDto == null){
+            throw new NullPointerException("The book dto should not be null.");
+        }
+
         Book newBook = new Book();
         newBook.setBookName(bookDto.bookName());
         newBook.setPrice(bookDto.price());

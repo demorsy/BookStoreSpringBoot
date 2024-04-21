@@ -16,6 +16,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -133,6 +134,44 @@ class BookServiceTest {
 
     @Test
     public void shouldReturnBookById(){
+        // 7:28:16
+        Long bookId = 1L;
+
+        Author author = new Author();
+        author.setId(1L);
+        Publisher publisher = new Publisher();
+        publisher.setId(1L);
+
+        Book book = new Book();
+        book.setBookName("Test book");
+
+        book.setPrice(15.00);
+        book.setDescription("test description lorem ipsum");
+        book.setAuthor(author);
+        book.setPublisher(publisher);
+
+        //Mock calls
+        when(bookRepository.findById(bookId)).thenReturn(Optional.of(book));
+        when(bookDtoMapper.convertBookToDto(any(Book.class)))
+                .thenReturn(new ResponseBookDto(
+                        1L,
+                        "Test book",
+                        15.00,
+                        1L,
+                        1L,
+                        "test description lorem ipsum"
+                ));
+        //When
+        ResponseBookDto bookDto = bookService.getOneBook(bookId);
+
+        //Then
+        assertEquals(bookDto.bookName(),book.getBookName());
+        assertEquals(bookDto.price(), book.getPrice());
+        assertEquals(bookDto.author_id(),book.getAuthor().getId());
+        assertEquals(bookDto.publisher_id(),book.getPublisher().getId());
+        assertEquals(bookDto.description(),book.getDescription());
+
+        verify(bookRepository,times(1)).findById(bookId);
 
     }
 }

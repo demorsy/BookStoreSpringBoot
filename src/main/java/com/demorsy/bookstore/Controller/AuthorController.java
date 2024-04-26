@@ -23,7 +23,7 @@ public class AuthorController {
     }
 
     @GetMapping("/{authorId}")
-    public Optional<Author> getOneAuthorById(Long authorId){ // fix optional
+    public Optional<Author> getOneAuthorById(@PathVariable Long authorId){ // fix optional
         return authorService.getOneAuthorById(authorId);
     }
 

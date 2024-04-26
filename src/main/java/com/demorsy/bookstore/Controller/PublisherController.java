@@ -1,5 +1,6 @@
 package com.demorsy.bookstore.Controller;
 
+import com.demorsy.bookstore.Dto.ResponsePublisherDto;
 import com.demorsy.bookstore.Entity.Publisher;
 import com.demorsy.bookstore.Service.PublisherService;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +16,7 @@ public class PublisherController {
     }
 
     @GetMapping("/{publisher_id}")
-    public Publisher getOnePublisherById(Long publisher_id){
+    public ResponsePublisherDto getOnePublisherById(@PathVariable  Long publisher_id){
         return publisherService.getOnePublisherById(publisher_id);
     }
 

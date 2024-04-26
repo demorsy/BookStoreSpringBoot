@@ -45,7 +45,7 @@ public class BookService {
     }
 
     public List<ResponseBookDto> getBooksByContainingName(String bookName){
-        return bookRepository.findBooksByBookNameContaining(bookName)
+        return bookRepository.findBooksByBookNameContainingIgnoreCase(bookName)
                 .stream()
                 .map(bookDtoMapper::convertBookToDto)
                 .collect(Collectors.toList());
